@@ -20,13 +20,20 @@ margin:0;
 background:#1e293b;
 padding:40px;
 border-radius:12px;
-width:420px;
-box-shadow:0 0 25px rgba(0,0,0,0.6);
+width:450px;
+box-shadow:0 0 30px rgba(0,0,0,0.6);
 }
 
 h1{
 text-align:center;
-margin-bottom:30px;
+margin-bottom:25px;
+}
+
+.subtitle{
+text-align:center;
+font-size:14px;
+color:#94a3b8;
+margin-bottom:25px;
 }
 
 input{
@@ -39,10 +46,6 @@ background:#334155;
 color:white;
 }
 
-input::placeholder{
-color:#94a3b8;
-}
-
 button{
 width:100%;
 padding:12px;
@@ -52,14 +55,14 @@ background:#6366f1;
 color:white;
 font-size:16px;
 cursor:pointer;
-transition:0.3s;
+transition:0.2s;
 }
 
 button:hover{
 background:#4f46e5;
 }
 
-.result{
+.results{
 margin-top:25px;
 }
 
@@ -68,9 +71,42 @@ background:#334155;
 padding:12px;
 border-radius:6px;
 margin-bottom:10px;
+display:flex;
+justify-content:space-between;
+align-items:center;
+}
+
+.copy{
+background:#6366f1;
+border:none;
+color:white;
+padding:6px 10px;
+border-radius:5px;
+cursor:pointer;
+font-size:12px;
+}
+
+.copy:hover{
+background:#4f46e5;
+}
+
+.footer{
+text-align:center;
+margin-top:20px;
+font-size:12px;
+color:#64748b;
 }
 
 </style>
+
+<script>
+
+function copiarBio(texto){
+navigator.clipboard.writeText(texto)
+alert("Bio copiada!")
+}
+
+</script>
 
 </head>
 
@@ -79,6 +115,10 @@ margin-bottom:10px;
 <div class="container">
 
 <h1>Gerador de Bio</h1>
+
+<div class="subtitle">
+Crie bios profissionais para seu perfil
+</div>
 
 <form method="POST">
 
@@ -92,14 +132,21 @@ margin-bottom:10px;
 
 </form>
 
-<div class="result">
+<div class="results">
 
 {% for bio in bios %}
 
-<div class="bio">{{bio}}</div>
+<div class="bio">
+<span>{{bio}}</span>
+<button class="copy" onclick="copiarBio('{{bio}}')">Copiar</button>
+</div>
 
 {% endfor %}
 
+</div>
+
+<div class="footer">
+Ferramenta criada para criadores
 </div>
 
 </div>
