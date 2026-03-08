@@ -1,18 +1,22 @@
 from flask import Flask, render_template, request
 import random
-import os
 
 app = Flask(__name__)
 
 modelos = [
 "🚀 {profissao} | apaixonado por {habilidade} | 📍{cidade}",
 "🔥 {profissao} ajudando pessoas com {habilidade}",
-"💡 Dicas de {habilidade} todos os dias | {profissao}",
-"✨ {profissao} | vivendo em {cidade}",
-"📈 Transformando {habilidade} em resultados"
+"💡 Dicas de {habilidade} todos os dias",
+"✨ {profissao} vivendo em {cidade}",
+"📈 Transformando {habilidade} em resultados",
+"🌍 {profissao} compartilhando conhecimento",
+"⚡ Especialista em {habilidade}",
+"🎯 {profissao} focado em crescimento",
+"📚 Aprendendo e ensinando {habilidade}",
+"🚀 Construindo algo grande em {cidade}"
 ]
 
-@app.route("/", methods=["GET","POST"])
+@app.route("/", methods=["GET", "POST"])
 def home():
 
     bios = []
@@ -23,7 +27,8 @@ def home():
         habilidade = request.form["habilidade"]
         cidade = request.form["cidade"]
 
-        for i in range(5):
+        for i in range(10):
+
             modelo = random.choice(modelos)
 
             bio = modelo.format(
@@ -37,6 +42,5 @@ def home():
     return render_template("index.html", bios=bios)
 
 
-port = int(os.environ.get("PORT", 10000))
-
-app.run(host="0.0.0.0", port=port)
+if __name__ == "__main__":
+    app.run()
