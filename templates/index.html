@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<title>Gerador de Bio para Instagram</title>
+
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+
+</head>
+<script>
+
+function copiar(id){
+
+let texto = document.getElementById(id).innerText;
+
+navigator.clipboard.writeText(texto);
+
+alert("Bio copiada!");
+
+}
+
+</script>
+<body>
+
+<div class="container">
+
+<h1>Gerador de Bio para Instagram</h1>
+
+<form method="POST">
+
+<input type="text" name="profissao" placeholder="Sua profissão" required>
+
+<input type="text" name="habilidade" placeholder="Sua habilidade" required>
+
+<input type="text" name="cidade" placeholder="Sua cidade">
+
+<br>
+
+<button type="submit">Gerar Bio</button>
+
+</form>
+
+{% if bios %}
+
+<h2>Sugestões de Bio:</h2>
+
+{% for bio in bios %}
+
+<div class="bio">
+
+<p id="bio{{ loop.index }}">{{ bio }}</p>
+
+<button onclick="copiar('bio{{ loop.index }}')">Copiar</button>
+
+</div>
+
+{% endfor %}
+
+{% endif %}
+</div>
+
+</body>
+</html>
