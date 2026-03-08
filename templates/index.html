@@ -2,7 +2,7 @@
 <html>
 <head>
 
-<title>BioCraft - Gerador de Bio</title>
+<title>BioCraft AI</title>
 
 <style>
 
@@ -21,18 +21,16 @@ margin:0;
 background:#1e293b;
 padding:40px;
 border-radius:12px;
-width:450px;
+width:480px;
 box-shadow:0 0 30px rgba(0,0,0,0.6);
 }
 
 h1{
 text-align:center;
-margin-bottom:10px;
 }
 
 .subtitle{
 text-align:center;
-font-size:14px;
 color:#94a3b8;
 margin-bottom:25px;
 }
@@ -40,15 +38,11 @@ margin-bottom:25px;
 input{
 width:100%;
 padding:12px;
-margin-bottom:15px;
+margin-bottom:12px;
 border-radius:6px;
 border:none;
 background:#334155;
 color:white;
-}
-
-input::placeholder{
-color:#94a3b8;
 }
 
 button{
@@ -58,8 +52,8 @@ border:none;
 border-radius:6px;
 background:#6366f1;
 color:white;
-font-size:16px;
 cursor:pointer;
+margin-top:5px;
 }
 
 button:hover{
@@ -72,7 +66,7 @@ margin-top:25px;
 
 .bio{
 background:#334155;
-padding:12px;
+padding:10px;
 border-radius:6px;
 margin-bottom:10px;
 display:flex;
@@ -83,35 +77,63 @@ align-items:center;
 .copy{
 background:#6366f1;
 border:none;
-color:white;
-padding:6px 10px;
+padding:5px 8px;
 border-radius:5px;
+color:white;
 cursor:pointer;
 font-size:12px;
-}
-
-.copy:hover{
-background:#4f46e5;
-}
-
-.counter{
-margin-top:15px;
-color:#94a3b8;
-font-size:13px;
-}
-
-.footer{
-text-align:center;
-margin-top:20px;
-font-size:12px;
-color:#64748b;
 }
 
 </style>
 
 <script>
 
-function copiarBio(texto){
+async function gerarBio(){
+
+let profissao = document.getElementById("profissao").value
+let habilidade = document.getElementById("habilidade").value
+let cidade = document.getElementById("cidade").value
+
+let resposta = await fetch("/gerar",{
+
+method:"POST",
+
+headers:{
+"Content-Type":"application/json"
+},
+
+body:JSON.stringify({
+profissao:profissao,
+habilidade:habilidade,
+cidade:cidade
+})
+
+})
+
+let bios = await resposta.json()
+
+let area = document.getElementById("results")
+
+area.innerHTML=""
+
+bios.forEach(function(bio){
+
+let div = document.createElement("div")
+
+div.className="bio"
+
+div.innerHTML = `
+<span>${bio}</span>
+<button class="copy" onclick="copiar('${bio}')">Copiar</button>
+`
+
+area.appendChild(div)
+
+})
+
+}
+
+function copiar(texto){
 
 navigator.clipboard.writeText(texto)
 
@@ -127,53 +149,21 @@ alert("Bio copiada!")
 
 <div class="container">
 
-<h1>BioCraft</h1>
+<h1>BioCraft AI</h1>
 
 <div class="subtitle">
-Crie bios profissionais para Instagram em segundos
+Gerador inteligente de bios para Instagram
 </div>
 
-<form method="POST">
+<input id="profissao" placeholder="Sua profissão">
+<input id="habilidade" placeholder="Sua habilidade">
+<input id="cidade" placeholder="Sua cidade">
 
-<input name="profissao" placeholder="Sua profissão">
+<button onclick="gerarBio()">Gerar Bios</button>
 
-<input name="habilidade" placeholder="Sua habilidade">
+<button onclick="gerarBio()">Gerar Novamente</button>
 
-<input name="cidade" placeholder="Sua cidade">
-
-<button type="submit">Gerar Bio</button>
-
-</form>
-
-<div class="results">
-
-{% for bio in bios %}
-
-<div class="bio">
-
-<span>{{bio}}</span>
-
-<button class="copy" onclick="copiarBio('{{bio}}')">Copiar</button>
-
-</div>
-
-{% endfor %}
-
-</div>
-
-<div class="counter">
-
-{% if bios %}
-{{ bios|length }} bios geradas
-{% endif %}
-
-</div>
-
-<div class="footer">
-
-Ferramenta criada para criadores de conteúdo
-
-</div>
+<div id="results" class="results"></div>
 
 </div>
 

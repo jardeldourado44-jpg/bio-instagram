@@ -1,46 +1,62 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, jsonify
 import random
 
 app = Flask(__name__)
 
+emojis = ["🚀","🔥","💡","✨","📈","🌍","⚡","🎯","📚","💼","🎥","🎧","💻","🧠","🛠"]
+
 modelos = [
-"🚀 {profissao} | apaixonado por {habilidade} | 📍{cidade}",
-"🔥 {profissao} ajudando pessoas com {habilidade}",
-"💡 Dicas de {habilidade} todos os dias",
-"✨ {profissao} vivendo em {cidade}",
-"📈 Transformando {habilidade} em resultados",
-"🌍 {profissao} compartilhando conhecimento",
-"⚡ Especialista em {habilidade}",
-"🎯 {profissao} focado em crescimento",
-"📚 Aprendendo e ensinando {habilidade}",
-"🚀 Construindo algo grande em {cidade}"
+"{emoji} {profissao} apaixonado por {habilidade}",
+"{emoji} ajudando pessoas com {habilidade}",
+"{emoji} vivendo em {cidade} e trabalhando como {profissao}",
+"{emoji} transformando {habilidade} em resultados",
+"{emoji} criador focado em {habilidade}",
+"{emoji} compartilhando conhecimento sobre {habilidade}",
+"{emoji} construindo algo grande em {cidade}",
+"{emoji} especialista em {habilidade}",
+"{emoji} aprendendo e ensinando {habilidade}",
+"{emoji} criando impacto com {habilidade}",
 ]
 
-@app.route("/", methods=["GET", "POST"])
-def home():
+# cria automaticamente 50 estilos
+while len(modelos) < 50:
+    modelos.append(random.choice(modelos))
+
+def gerar_bios(profissao, habilidade, cidade):
 
     bios = []
 
-    if request.method == "POST":
+    for i in range(10):
 
-        profissao = request.form["profissao"]
-        habilidade = request.form["habilidade"]
-        cidade = request.form["cidade"]
+        modelo = random.choice(modelos)
 
-        for i in range(10):
+        bio = modelo.format(
+            emoji=random.choice(emojis),
+            profissao=profissao,
+            habilidade=habilidade,
+            cidade=cidade
+        )
 
-            modelo = random.choice(modelos)
+        bios.append(bio)
 
-            bio = modelo.format(
-                profissao=profissao,
-                habilidade=habilidade,
-                cidade=cidade
-            )
+    return bios
 
-            bios.append(bio)
+@app.route("/")
+def home():
+    return render_template("index.html")
 
-    return render_template("index.html", bios=bios)
+@app.route("/gerar", methods=["POST"])
+def gerar():
 
+    data = request.json
+
+    profissao = data["profissao"]
+    habilidade = data["habilidade"]
+    cidade = data["cidade"]
+
+    bios = gerar_bios(profissao, habilidade, cidade)
+
+    return jsonify(bios)
 
 if __name__ == "__main__":
     app.run()
