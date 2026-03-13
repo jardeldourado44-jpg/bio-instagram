@@ -1,171 +1,155 @@
 <!DOCTYPE html>
-<html>
+<html lang="pt-BR">
 <head>
-
-<title>BioCraft AI</title>
-
-<style>
-
-body{
-background:#0f172a;
-color:white;
-font-family:Arial;
-display:flex;
-justify-content:center;
-align-items:center;
-height:100vh;
-margin:0;
-}
-
-.container{
-background:#1e293b;
-padding:40px;
-border-radius:12px;
-width:480px;
-box-shadow:0 0 30px rgba(0,0,0,0.6);
-}
-
-h1{
-text-align:center;
-}
-
-.subtitle{
-text-align:center;
-color:#94a3b8;
-margin-bottom:25px;
-}
-
-input{
-width:100%;
-padding:12px;
-margin-bottom:12px;
-border-radius:6px;
-border:none;
-background:#334155;
-color:white;
-}
-
-button{
-width:100%;
-padding:12px;
-border:none;
-border-radius:6px;
-background:#6366f1;
-color:white;
-cursor:pointer;
-margin-top:5px;
-}
-
-button:hover{
-background:#4f46e5;
-}
-
-.results{
-margin-top:25px;
-}
-
-.bio{
-background:#334155;
-padding:10px;
-border-radius:6px;
-margin-bottom:10px;
-display:flex;
-justify-content:space-between;
-align-items:center;
-}
-
-.copy{
-background:#6366f1;
-border:none;
-padding:5px 8px;
-border-radius:5px;
-color:white;
-cursor:pointer;
-font-size:12px;
-}
-
-</style>
-
-<script>
-
-async function gerarBio(){
-
-let profissao = document.getElementById("profissao").value
-let habilidade = document.getElementById("habilidade").value
-let cidade = document.getElementById("cidade").value
-
-let resposta = await fetch("/gerar",{
-
-method:"POST",
-
-headers:{
-"Content-Type":"application/json"
-},
-
-body:JSON.stringify({
-profissao:profissao,
-habilidade:habilidade,
-cidade:cidade
-})
-
-})
-
-let bios = await resposta.json()
-
-let area = document.getElementById("results")
-
-area.innerHTML=""
-
-bios.forEach(function(bio){
-
-let div = document.createElement("div")
-
-div.className="bio"
-
-div.innerHTML = `
-<span>${bio}</span>
-<button class="copy" onclick="copiar('${bio}')">Copiar</button>
-`
-
-area.appendChild(div)
-
-})
-
-}
-
-function copiar(texto){
-
-navigator.clipboard.writeText(texto)
-
-alert("Bio copiada!")
-
-}
-
-</script>
-
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>BioCraft AI | Gere bios profissionais e venda mais</title>
+  <meta name="description" content="Crie bios de Instagram em segundos e transforme seu perfil em uma máquina de vendas." />
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
 </head>
-
 <body>
+  <header class="hero">
+    <div class="wrap">
+      <p class="tag">Ferramenta para criadores, freelancers e negócios locais</p>
+      <h1>Crie uma bio profissional e aumente suas vendas no Instagram</h1>
+      <p class="subtitle">Use IA para gerar bios prontas para conversão, ganhar autoridade e atrair clientes todos os dias.</p>
+      <div class="hero-cta">
+        <a href="#gerador" class="btn btn-primary">Testar gratuitamente</a>
+        <a href="#planos" class="btn btn-secondary">Ver planos</a>
+      </div>
+    </div>
+  </header>
 
-<div class="container">
+  <main class="wrap">
+    <section id="gerador" class="card">
+      <h2>Gerador de bio inteligente</h2>
+      <p>Preencha seus dados e gere 10 opções profissionais em segundos.</p>
 
-<h1>BioCraft AI</h1>
+      <div class="form-grid">
+        <input id="profissao" placeholder="Sua profissão (ex: Social Media)" />
+        <input id="habilidade" placeholder="Sua habilidade principal (ex: tráfego pago)" />
+        <input id="cidade" placeholder="Sua cidade (ex: São Paulo)" />
+      </div>
 
-<div class="subtitle">
-Gerador inteligente de bios para Instagram
-</div>
+      <button class="btn btn-primary full" onclick="gerarBio()">Gerar bios agora</button>
+      <p id="feedback" class="feedback"></p>
+      <div id="results" class="results"></div>
+    </section>
 
-<input id="profissao" placeholder="Sua profissão">
-<input id="habilidade" placeholder="Sua habilidade">
-<input id="cidade" placeholder="Sua cidade">
+    <section class="trust">
+      <div class="trust-item"><strong>+3.000</strong><span>bios geradas</span></div>
+      <div class="trust-item"><strong>+850</strong><span>usuários ativos</span></div>
+      <div class="trust-item"><strong>4.9/5</strong><span>avaliação média</span></div>
+    </section>
 
-<button onclick="gerarBio()">Gerar Bios</button>
+    <section id="planos" class="card">
+      <h2>Planos para gerar renda mensal</h2>
+      <div class="plans">
+        <article class="plan">
+          <h3>Starter</h3>
+          <p class="price">R$ 29/mês</p>
+          <ul>
+            <li>100 bios por mês</li>
+            <li>Modelos de CTA</li>
+            <li>Suporte por e-mail</li>
+          </ul>
+          <button class="btn btn-secondary full">Começar</button>
+        </article>
+        <article class="plan featured">
+          <p class="badge">Mais escolhido</p>
+          <h3>Profissional</h3>
+          <p class="price">R$ 79/mês</p>
+          <ul>
+            <li>Bios ilimitadas</li>
+            <li>Calendário de conteúdo</li>
+            <li>Suporte prioritário</li>
+          </ul>
+          <button class="btn btn-primary full">Assinar plano</button>
+        </article>
+        <article class="plan">
+          <h3>Agência</h3>
+          <p class="price">R$ 199/mês</p>
+          <ul>
+            <li>Até 20 perfis</li>
+            <li>White-label</li>
+            <li>Onboarding 1:1</li>
+          </ul>
+          <button class="btn btn-secondary full">Falar com vendas</button>
+        </article>
+      </div>
+    </section>
 
-<button onclick="gerarBio()">Gerar Novamente</button>
+    <section class="card">
+      <h2>Receba dicas para vender mais toda semana</h2>
+      <div class="lead-form">
+        <input id="nome" placeholder="Seu nome" />
+        <input id="email" placeholder="Seu melhor e-mail" />
+        <button class="btn btn-primary" onclick="capturarLead()">Quero receber</button>
+      </div>
+      <p id="lead-feedback" class="feedback"></p>
+    </section>
+  </main>
 
-<div id="results" class="results"></div>
+  <script>
+    async function gerarBio() {
+      const profissao = document.getElementById("profissao").value;
+      const habilidade = document.getElementById("habilidade").value;
+      const cidade = document.getElementById("cidade").value;
+      const area = document.getElementById("results");
+      const feedback = document.getElementById("feedback");
 
-</div>
+      feedback.textContent = "";
+      area.innerHTML = "";
 
+      try {
+        const resposta = await fetch("/gerar", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ profissao, habilidade, cidade })
+        });
+
+        const dados = await resposta.json();
+        if (!resposta.ok) {
+          feedback.textContent = dados.erro || "Não foi possível gerar agora.";
+          return;
+        }
+
+        dados.bios.forEach((bio) => {
+          const div = document.createElement("div");
+          div.className = "bio";
+          div.innerHTML = `<span>${bio}</span><button class="copy" onclick="copiarBio(${JSON.stringify("" + bio)})">Copiar</button>`;
+          area.appendChild(div);
+        });
+      } catch {
+        feedback.textContent = "Erro de conexão. Tente novamente.";
+      }
+    }
+
+    function copiarBio(texto) {
+      navigator.clipboard.writeText(texto);
+      alert("Bio copiada!");
+    }
+
+    async function capturarLead() {
+      const nome = document.getElementById("nome").value;
+      const email = document.getElementById("email").value;
+      const feedback = document.getElementById("lead-feedback");
+
+      feedback.textContent = "";
+
+      try {
+        const resposta = await fetch("/capturar-lead", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ nome, email })
+        });
+
+        const dados = await resposta.json();
+        feedback.textContent = resposta.ok ? dados.mensagem : (dados.erro || "Erro ao enviar.");
+      } catch {
+        feedback.textContent = "Erro de conexão. Tente novamente.";
+      }
+    }
+  </script>
 </body>
 </html>
